@@ -1,7 +1,6 @@
 <?php 
 //error_reporting(E_ALL | E_STRICT); ini_set('display_errors', 'On');
 //$start_timer = microtime(true);
-$DEBUG=(isset($_COOKIE['acdrvmdebug'])?true:false);
 
 
 $username = $_SERVER['PHP_AUTH_USER'];
@@ -503,12 +502,8 @@ if ( isset($_REQUEST['need_html']) && $_REQUEST['need_html'] == 'true' ) {
 				echo '<tr class="record record_cdr" data-id="'.$row['id'].'" data-filepath="'.$file_params['path'].'">';
 				formatCallDate($row['calldate'],$row['uniqueid']);
 				formatDisposition($row['disposition'], $row['amaflags']);
-				preg_match('~/(\s+)-~', $row['channel'], $_srcchannel_sanitized );
-				preg_match('~/(\s+)-~', $row['dstchannel'], $_dstchannel_sanitized );
-				$srcchannel_sanitized=(isset($_srcchannel_sanitized[0])&&strlne($_srcchannel_sanitized[0])>2?"(".$_srcchannel_sanitized[0].")":"");
-				$dstchannel_sanitized=(isset($_dstchannel_sanitized[0])&&strlne($_dstchannel_sanitized[0])>2?"(".$_dstchannel_sanitized[0].")":"");
-				formatSrc($row['src'].($row['src']!=$row['cnum']?" (".$row['cnum'].")":"").$srcchannel_sanitized,$row['clid']);
-				formatDst($row['dst'].$dstchannel_sanitized, $row['dcontext'] );
+				formatSrc($row['src'].($row['src']!=$row['cnum']?" (".$row['cnum'].")":""),$row['clid']);
+				formatDst($row['dst'], $row['dcontext'] );
 				if ( Config::exists('display.column.did') && Config::get('display.column.did') == 1 ) {
 					if ( isset($row['did']) && strlen($row['did']) ) {
 						formatDst($row['did'], $row['dcontext'] . ' # ' . $row['dst']);
