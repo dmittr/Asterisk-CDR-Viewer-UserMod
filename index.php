@@ -1,7 +1,7 @@
 <?php 
 //error_reporting(E_ALL | E_STRICT); ini_set('display_errors', 'On');
 //$start_timer = microtime(true);
-$DEBUG=(isset($_GET['debug'])?true:false);
+$DEBUG=(isset($_REQUEST['debug'])?true:false);
 
 
 $username = $_SERVER['PHP_AUTH_USER'];
