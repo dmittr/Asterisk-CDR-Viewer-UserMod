@@ -1,2 +1,5 @@
 inc/config/*.php
 TODO.txt
+.htpasswd 
+access.ini
+
