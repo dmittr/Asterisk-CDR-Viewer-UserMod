@@ -1,6 +1,8 @@
 <?php 
 //error_reporting(E_ALL | E_STRICT); ini_set('display_errors', 'On');
 //$start_timer = microtime(true);
+$DEBUG=(isset($_GET['debug'])?true:false);
+
 
 $username = $_SERVER['PHP_AUTH_USER'];
 
@@ -551,7 +553,7 @@ if ( isset($_REQUEST['need_html']) && $_REQUEST['need_html'] == 'true' ) {
 				}
 				echo '</tr>';
 			}
-			
+			if ($DEBUG) { echo "<pre>" ; print_r($superresult); echo "</pre>"; }
 		}
 		catch (PDOException $e) {
 			print $e->getMessage();
