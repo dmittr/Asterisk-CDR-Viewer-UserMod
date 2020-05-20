@@ -2,6 +2,8 @@
 //error_reporting(E_ALL | E_STRICT); ini_set('display_errors', 'On');
 //$start_timer = microtime(true);
 
+$username = $_SERVER['PHP_AUTH_USER'];
+
 require_once 'inc/load.php';
 
 if ( !isset($_POST['form_submitted']) ) {
@@ -373,7 +375,47 @@ if ( isset($_REQUEST['need_html']) && $_REQUEST['need_html'] == 'true' ) {
 			} else {
 				$superresult = $rawresult;
 			}
-			if ( $tot_calls_raw > $result_limit ) {
+			if ( Config::get('display.main.nofilehide') == 1 ) {
+				$rawresult=$superresult;
+				$superresult=array();
+				$recordingfile_colname = Config::get('system.column_name');
+				foreach ($rawresult as $key => $row){
+					if (isset($row[$recordingfile_colname]) && (!empty($row[$recordingfile_colname])) && $row['duration']>0) {
+						$superresult[$key]=$row;
+					}
+				}
+				//echo "$query<pre>";
+				//print_r($superresult);
+				
+			}
+			if (file_exists('access.ini')) {
+				$access_file=fopen('access.ini',"r");
+				$access_allow=array();
+				while (!feof($access_file)) {
+					$access_raw_line=fgets($access_file);
+					$access_raw_line_arr=explode(":",$access_raw_line);
+					if ($access_raw_line_arr[0]==$username && isset($access_raw_line_arr[1])) {
+						$access_allow=explode(",",$access_raw_line_arr[1]);
+					}
+				}
+				if (count($access_allow)){
+					$rawresult=$superresult;
+					$superresult=array();
+					foreach ($rawresult as $key => $row){
+						$acess_show=false;
+						foreach ($access_allow as $access_num) {
+							if ($row['src']==$access_num || $row['dst']==$access_num || $row['did']==$access_num) {
+								$acess_show=true;
+							}
+						}
+						if ($acess_show) {
+							$superresult[$key]=$row;
+						}
+					}
+				}
+				fclose($access_file);
+			}
+/*			if ( $tot_calls_raw > $result_limit ) {
 				echo '<p class="center title">Показаны '. ($result_limit - $filtered_count) .' из '. $tot_calls_raw;
 				echo Config::get('display.main.duphide') == 1 ? ', отфильтровано ' . $filtered_count : '';
 				echo ' записей </p><table class="cdr">';
@@ -381,7 +423,7 @@ if ( isset($_REQUEST['need_html']) && $_REQUEST['need_html'] == 'true' ) {
 				echo '<p class="center title">Найдено '. $tot_calls_raw;
 				echo Config::get('display.main.duphide') == 1 ? ', отфильтровано ' . $filtered_count : '';
 				echo ' записей </p><table class="cdr">';
-			}
+			} */
 			foreach ( $superresult as $key => $row ) {			
 				++$i;
 				if ( $i == Config::get('display.main.header_step') ) {
@@ -459,7 +501,7 @@ if ( isset($_REQUEST['need_html']) && $_REQUEST['need_html'] == 'true' ) {
 				echo '<tr class="record record_cdr" data-id="'.$row['id'].'" data-filepath="'.$file_params['path'].'">';
 				formatCallDate($row['calldate'],$row['uniqueid']);
 				formatDisposition($row['disposition'], $row['amaflags']);
-				formatSrc($row['src'],$row['clid']);
+				formatSrc($row['src'].($row['src']!=$row['cnum']?" (".$row['cnum'].")":""),$row['clid']);
 				formatDst($row['dst'], $row['dcontext'] );
 				if ( Config::exists('display.column.did') && Config::get('display.column.did') == 1 ) {
 					if ( isset($row['did']) && strlen($row['did']) ) {
@@ -886,7 +928,7 @@ if ( isset($_REQUEST['need_asr_report']) && $_REQUEST['need_asr_report'] == 'tru
 	}
 	$sth = null;
 
-	if ( $asr_cur_key != '' ) {
+	if ( $asr_curw_key != '' ) {
 		echo '<tr class="record">';
 		echo "<td class=\"end_col\">$asr_cur_key</td><td class=\"chart_data\">",($asr_total_calls ? intval(($asr_answered_calls/$asr_total_calls)*100) : 0),"</td><td class=\"chart_data\">",intval($asr_bill_secs/($asr_answered_calls?$asr_answered_calls:1)),"</td><td class=\"chart_data\">$asr_total_calls</td><td class=\"chart_data\">$asr_answered_calls</td><td class=\"chart_data\">$asr_bill_secs</td>";
 		echo '</tr>';
