@@ -27,11 +27,11 @@
 <select name="startday" id="startday">
 	<?php
 	for ($i = 1; $i <= 31; $i++) {
-		if ( date('d', time()) == $i ) {
-			echo '<option value="'.$i.'" selected="selected">'.$i.'</option>';
-		} else {
+//		if ( date('d', time()) == $i ) {
+//			echo '<option value="'.$i.'" selected="selected">'.$i.'</option>';
+//		} else {
 			echo '<option value="'.$i.'">'.$i.'</option>';
-		}
+//		}
 	}
 	?>
 </select>
@@ -489,9 +489,9 @@ foreach ($months as $i => $month) {
 	&nbsp;
 	</td>
 	<td>
-		<div id="show_spoilers">
+		<!-- div id="show_spoilers">
 			<span>Дополнительные фильтры</span>
-		</div>
+		</div -->
 	</td>
 </tr>
 <tr>
