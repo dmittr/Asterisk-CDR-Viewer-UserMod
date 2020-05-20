@@ -1,0 +1,9 @@
+AuthType Basic
+AuthName "Protected!"
+AuthUserFile /opt/Asterisk-CDR-Viewer-Mod/.htpasswd
+Require valid-user
+
+<FilesMatch ".(htaccess|htpasswd|ini)$">
+order allow,deny
+deny from all
+</FilesMatch>
