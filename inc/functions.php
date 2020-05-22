@@ -211,7 +211,37 @@ function formatSrc($src, $clid) {
 
 function formatApp($app, $lastdata) {
 	$tooltip = $app . '(' . $lastdata . ')';
-	echo '<td class="record_col"><abbr class="simptip-position-top simptip-smooth simptip-fade" data-clipboard data-clipboard-text="'.$tooltip.'" data-tooltip="Приложение: '.$tooltip.'">'.$app.'</abbr></td>' . PHP_EOL;
+
+	switch ($app) {
+		case 'Dial':
+			$appTxt = 'Набор номера';
+			$style = 'dial';
+			break;
+		case 'RetryDial':
+			$appTxt = 'Повторный набор';
+			$style = 'retrydial';
+			break;
+		case 'Queue':
+			$appTxt = 'Очередь';
+			$style = 'queue';
+			break;
+		case 'Hangup':
+			$appTxt = 'Разъединение';
+			$style = 'hangup';
+			break;
+		case 'Playback':
+			$appTxt = 'Воспроизведение';
+			$style = 'playback';
+			break;	
+		case 'VoiceMail':
+			$appTxt = 'Голосовая почта';
+			$style = 'voicemail';
+			break;	
+		default:
+			$appTxt = $app;
+	}
+	
+	echo '<td class="record_col"><abbr class="simptip-position-top simptip-smooth simptip-fade" data-clipboard data-clipboard-text="'.$tooltip.'" data-tooltip="Приложение: '.$tooltip.'">'.$appTxt.'</abbr></td>' . PHP_EOL;
 }
 
 function formatDst($dst, $dcontext) {
