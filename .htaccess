@@ -1,6 +1,6 @@
 AuthType Basic
 AuthName "Protected!"
-AuthUserFile /opt/Asterisk-CDR-Viewer-Mod/.htpasswd
+AuthUserFile /opt/Asterisk-CDR-Viewer-UserMod/.htpasswd
 Require valid-user
 
 <FilesMatch ".(htaccess|htpasswd|ini)$">
