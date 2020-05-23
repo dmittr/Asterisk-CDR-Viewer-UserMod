@@ -502,7 +502,7 @@ if ( isset($_REQUEST['need_html']) && $_REQUEST['need_html'] == 'true' ) {
 				echo '<tr class="record record_cdr" data-id="'.$row['id'].'" data-filepath="'.$file_params['path'].'">';
 				formatCallDate($row['calldate'],$row['uniqueid']);
 				formatDisposition($row['disposition'], $row['amaflags']);
-				formatSrc($row['src'].($row['src']!=$row['cnum']?" (".$row['cnum'].")":""),$row['clid']);
+				formatSrc($row['src'].( (($row['src']!=$row['cnum']) && (!empty($row['cnum'])) ) ?" (".$row['cnum'].")":""),$row['clid']);
 				formatDst($row['dst'], $row['dcontext'] );
 				if ( Config::exists('display.column.did') && Config::get('display.column.did') == 1 ) {
 					if ( isset($row['did']) && strlen($row['did']) ) {
