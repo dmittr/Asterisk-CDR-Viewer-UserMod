@@ -236,6 +236,10 @@ function formatApp($app, $lastdata) {
 		case 'VoiceMail':
 			$appTxt = 'Голосовая почта';
 			$style = 'voicemail';
+			break;
+		case 'Busy':
+			$appTxt = 'Занято';
+			$style = 'busy';
 			break;	
 		default:
 			$appTxt = $app;
