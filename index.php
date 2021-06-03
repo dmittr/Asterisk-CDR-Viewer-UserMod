@@ -397,7 +397,7 @@ if ( isset($_REQUEST['need_html']) && $_REQUEST['need_html'] == 'true' ) {
 					$access_raw_line=fgets($access_file);
 					$access_raw_line_arr=explode(":",$access_raw_line);
 					if ($access_raw_line_arr[0]==$username && isset($access_raw_line_arr[1])) {
-						$access_allow=explode(",",$access_raw_line_arr[1]);
+						$access_allow=explode(",",str_replace("\n","",$access_raw_line_arr[1]));
 					}
 				}
 				if (count($access_allow)){
