@@ -1,5 +1,5 @@
 <div id="content"></div>
-
+<?php echo "NMS:".explode(", ",$access_allow); ?>
 </div>
 
 <div id="footer">
